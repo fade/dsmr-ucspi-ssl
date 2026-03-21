@@ -1,0 +1,14 @@
+From: Brian O'Reilly <fade@deepsky.com>
+Date: Sat, 21 Mar 2026 00:00:00 +0000
+Subject: Set install prefix to /usr for Debian packaging
+
+Install binaries to /usr/bin (via conf-home=/usr) rather than /usr/local/bin.
+
+--- a/conf-home
++++ b/conf-home
+@@ -1,4 +1,4 @@
+-/usr/local
++/usr
+
+ This is the ucspi-ssl home directory. Programs will be installed in
+ .../bin.
