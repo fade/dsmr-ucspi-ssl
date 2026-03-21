@@ -1,31 +1,27 @@
 #!/usr/bin/make -f
 
-DESTDIR = $(CURDIR)/debian/ucspi-ssl
-
 %:
 	dh $@
 
 override_dh_auto_configure:
 	# conf-home is patched to /usr by debian-install-paths.patch
-	# Run configure to generate compile/load scripts in src/
-	cd src && ../configure
+	# package/compile creates the compile/ shadow tree and runs make
+	package/compile base
 
 override_dh_auto_build:
-	# Clear LDFLAGS: djbware load script uses $1 as the output binary name
-	$(MAKE) -C src LDFLAGS= it
+	# Build is done by package/compile in the configure step
 
 override_dh_auto_install:
-	install -d $(DESTDIR)/usr/bin
+	install -d debian/ucspi-ssl/usr/bin
 	for cmd in `cat package/commands-base`; do \
-	  install -m 0755 src/$$cmd $(DESTDIR)/usr/bin/$$cmd || exit 1; \
+	  install -m 0755 command/$$cmd debian/ucspi-ssl/usr/bin/$$cmd || exit 1; \
 	done
 	for f in man/*.1 man/*.2; do \
 	  [ -f "$$f" ] || continue; \
 	  sect=$${f##*.}; \
-	  install -d $(DESTDIR)/usr/share/man/man$$sect; \
-	  install -m 0644 $$f $(DESTDIR)/usr/share/man/man$$sect/; \
+	  install -d debian/ucspi-ssl/usr/share/man/man$$sect; \
+	  install -m 0644 $$f debian/ucspi-ssl/usr/share/man/man$$sect/; \
 	done
 
 override_dh_auto_clean:
-	$(MAKE) -C src clean 2>/dev/null || true
-	rm -f src/compile src/load src/makelib src/sharedlib src/systype
+	rm -rf compile command
