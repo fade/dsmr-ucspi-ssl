@@ -1,0 +1,19 @@
+Source: ucspi-ssl
+Section: net
+Priority: optional
+Maintainer: Brian O'Reilly <fade@deepsky.com>
+Build-Depends: debhelper-compat (= 13), libssl-dev, fehqlibs-dev
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+
+Package: ucspi-ssl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ucspi-tcp | ucspi-tcp-ipv6
+Description: SSL/TLS client and server tools for UCSPI
+ ucspi-ssl provides sslserver and sslclient, command-line tools for
+ building SSL/TLS-aware TCP client-server applications using the UCSPI
+ interface.  It is commonly used to add TLS support to qmail SMTP and
+ POP3 services.
+ .
+ This package is the fehcom.de maintained fork by Erwin Hoffman,
+ supporting OpenSSL 3.x and TLS 1.3.

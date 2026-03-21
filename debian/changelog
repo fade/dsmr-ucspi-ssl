@@ -1,0 +1,9 @@
+ucspi-ssl (0.13.07-1) UNRELEASED; urgency=medium
+
+  * Initial Debian packaging of ucspi-ssl 0.13.07 (fehcom.de).
+  * Supports OpenSSL 3.x and TLS 1.3.
+  * Builds against fehqlibs-dev for DNS resolution support.
+  * Target: Debian 13 Trixie.
+
+ -- Brian O'Reilly <fade@deepsky.com>  Sat, 21 Mar 2026 00:00:00 +0000
+

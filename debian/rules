@@ -1,0 +1,37 @@
+#!/usr/bin/make -f
+
+DESTDIR = $(CURDIR)/debian/ucspi-ssl
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# Install to /usr (not /usr/local) and use system fehQlibs
+	echo /usr > conf-home
+	echo /usr/local/qlibs > conf-qlibs
+
+override_dh_auto_build:
+	# djbware build: generate compile/load scripts then build
+	cd src && ../configure
+	# Clear LDFLAGS: djbware load script uses $1 as binary name
+	$(MAKE) -C src LDFLAGS= it
+
+override_dh_auto_install:
+	install -d $(DESTDIR)/usr/bin
+	install -d $(DESTDIR)/usr/share/man
+	for cmd in `cat package/commands-base`; do \
+	  install -m 0755 compile/$$cmd $(DESTDIR)/usr/bin/$$cmd || exit 1; \
+	done
+	# Man pages
+	for f in man/*.1 man/*.2; do \
+	  [ -f "$$f" ] || continue; \
+	  sect=$${f##*.}; \
+	  install -d $(DESTDIR)/usr/share/man/man$$sect; \
+	  install -m 0644 $$f $(DESTDIR)/usr/share/man/man$$sect/; \
+	done
+
+override_dh_auto_clean:
+	$(MAKE) -C src clean 2>/dev/null || true
+	rm -f src/compile src/load src/makelib src/sharedlib src/systype
+	echo /usr/local > conf-home
+	echo /usr/local/qlibs > conf-qlibs
