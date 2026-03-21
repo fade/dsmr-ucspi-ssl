@@ -1,0 +1,7 @@
+/package/host/superscript.com/net/ucspi-ssl/etc/dh1024.pem
+
+# This is ucspi-ssl's DH parameter file.
+
+# /usr/local/ssl/pem/dh1024.pem
+
+# This is OpenSSL's DH default parameter file.

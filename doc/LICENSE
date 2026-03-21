@@ -1,0 +1,70 @@
+AUTHOR
+======
+
+Author:
+	Dr. Erwin Hoffmann - FEHCom Germany
+Web-Site: 	
+	https://www.fehcom.de/ipnet/ucspi-ssl.html
+E-Mail: 	
+	feh@fehcom.de
+
+CONTRIBUTIONS
+=============
+
+ucspi-ssl is based on William E. Baxter's (superscript.com) version used by permission:
+	https://www.superscript.com/
+which is put into the Public Domain.
+
+ucspi-ssl uses enhancements from Scott Gifford's and Charly Brady's API
+to support STARTTLS communication:
+	https://github.com/scottgifford/ucspi-ssl
+License state unknown
+
+LICENSE
+=======
+
+Given these restrictions:
+
+ucspi-ssl is free software placed into the Public Domain. 
+
+This includes:
+	You can download and use ucspi-ssl (and parts of it) as you like.
+	You can modify the source code without notification to or permission by the author.
+Please check:
+	http://www.cr.yp.to/softwarelaw.html
+Note: 
+	ucspi-ssl depends on third party software with different 
+	license and/or distribution conditions; in particular
+  - OpenSSL
+  - LibreSSL
+
+
+DEPENDENCIES
+============
+
+ucspi-ssl depends on the following package:
+	- fehQlibs found on https://www/ipnet/qlibs.html 
+which is Public Domain as well.
+
+
+Note:
+-----
+
+The author of the program may unsolicitedly change the dependencies. 
+Thus, it is your obligation to follow and consider any changes!
+
+
+FITNESS
+=======
+
+The author does not guarantee a specific fitness of ucspi-ssl.
+If you use ucspi-ssl, it's on your own risk.
+
+
+DISTRIBUTION
+============
+
+ucspi-ssl may be included in ports and packages under the following conditions:
+ 	The port/package has to show the current version number of ucspi-ssl.
+	This license file has to be included in the distribution.
+

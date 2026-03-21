@@ -1,0 +1,15 @@
+-lssl -lcrypto 
+
+
+
+-L/usr/local/openssl-3.0.7 -lssl -lcrypto 
+
+-lssl -lcrypto 
+
+# These are samples for OpenSSL and LibreSSL to be semi-statically linked
+
+-L/home/ucspi/_SSL/libressl-3.7.2/ssl/.libs -L/home/ucspi/_SSL/libressl-3.7.2/crypto/.libs  -lssl -lcrypto
+-L/usr/local/openssl-3.0.7 -lssl -lcrypto 
+
+# This will be used to add SSL and crypto support by the given library path (-L) 
+# In case the ssl and crypto lib is not in your lib path, use LD_LIBRARY_PATH additionally upon call!

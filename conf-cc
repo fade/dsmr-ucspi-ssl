@@ -1,0 +1,3 @@
+cc -O2 -g -Wall -Wpedantic
+
+# This will be used to compile .c files.

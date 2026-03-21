@@ -1,0 +1,7 @@
+Program like stunnel (web).
+Rules tests (web) - no required anymore.
+CRL support (feh).
+OCSPI support (feh) - becomes obsolete.
+DANE support (feh).
+SSL connection caching (feh).
+Migrate whole openssl stuff to wolfssl (bergmann).

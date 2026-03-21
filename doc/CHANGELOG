@@ -1,0 +1,377 @@
+20011209
+	Initial release.
+	version: 0.50
+
+20021207
+	Convert to new build project.
+	Update libraries.
+	Correct load ordering for ssl programs.
+
+20030118
+	Option to set TCP environment variables.
+	Option to set SSL environment variables a la mod_perl.
+	Added sslperl.
+	Correct closure handling in ssl_io.c.
+
+20030128
+	Correct setting of TCPREMOTEINFO.
+
+20040127
+	Improved env tracking in handlers.
+	Updated tests.
+
+20040204
+	Clean up signal handling, process usage.
+
+20040209
+	Added nN options to sslclient.
+
+20040313
+	Added conf-ssl.
+	Version 0.65.
+
+20040317
+	Delete conf-home.
+	Permit nN opts in sslclient.
+	Version 0.66.
+
+20040320
+	Allow sslclient to avoid server verification.
+	Support cipher selection.
+	Correct execution botch in sslperl.
+	Clean up ssl_io and signal interaction.
+	Version 0.67.
+
+20040502
+	Read SSL setup info before dropping privilege.
+	Version 0.68.
+
+20050417
+	Don't fail on setsid if already group leader (Gabriel Russell).
+	Add compatibility macros for older Perl.
+	Don't leak pointer returned from eval_pv.
+	Support for partial testing.
+	Remove dependency on daemontools from rts.
+
+20050515
+	Partial-install bug fix in package/upgrade.
+
+20050605
+	Don't lose file descriptors in sslclient (Paul Jarc).
+
+20050610
+	Close socket for deny rule (Fred Lindberg).
+
+20050703
+	Revise ssl_io.
+	Free ssl object in sslhandle.c.
+	Add progtimeout option.
+
+20050717
+	Version 0.70.
+
+20090811 
+	Included ucspi-ssl-0.70_ucspitls-0.6.patch (STARTTLS support)
+	originally designed and provided by Scott Gifford (FEH).
+
+20100319
+	Added Certchain support for sslserver and sslclient (FEH).
+
+20120217
+	Integration and added man-pages (FEH).
+	Version 0.80.
+
+20120921
+	Synced with ucspi-tcp6-0.95.
+	Version 0.82
+
+20121003
+	Fixed integration bug in ssl_very.c.
+	Included patches from Peter Conrad.
+	Version 0.83.
+
+20121005
+	Bug fix in sslserver. Several small
+	corrections.
+	Version 0.83a
+
+20121019
+	Fix for large X509 serial numbers on x86 (tx. Peter Conrad).
+	SAN DNSname has precedence over CN in subject.
+	Re-edited man pages and rts tests.
+	Version 0.84.
+
+20130602
+	Added IPv6 support (tx. to Felix von Leitner and Brandon Turner).
+	UI: Changed sslserver client cert call from '-i/-I' to '-z/-Z'
+	for compatibility reasons.
+	Added '-4/-6' support for client scripts.  
+	Version 0.90. 
+
+20130804
+	Added output environment variables TCP6* for sslserver.
+	sslperl, sslhandle, and sslprint are not IPv6 ready yet. 
+	Version 0.91 test.
+
+20130910
+	Added IPv6 capabilities to sslhandle, sslprint, sslperl.
+	Changed verification of X.509 certs. 
+	Removed obsolete socket_4 calls in sslserver.
+	Version 0.92 beta.
+
+20140112
+	Streamlined code with ucspi-tcp6-1.00.
+	Supplied new certs with customized SAN.
+	Make rts working (at least some how).
+
+20140331
+	Added support for personalized client certs.
+	New option '-m' in sslserver, complementing '-z'.
+	CCAFILE='-' disables client cert request.
+	Version 0.94 beta.
+
+20141221
+	Added verbose log output for SSL connection informations.
+	Version 0.95a beta. 
+
+20140208
+	Fixed wrongly nested CONNECT error code for sslclient.c
+	producing wrong warning messages while connecting to
+	an IPv4 address. 
+	Added call of '-ldl' in ssl.lib.
+	Version 0.95b beta.
+
+20151101
+	Mitigation of SSL connection hanging during
+	coincident change of daylight-saving settings. 
+
+20160228
+	Fixed bug in sslserver's dnsip lookup in case of paranoid settings 
+	and additonal existance of IPv6 AAAA records for incoming IPv4 connection.
+	Version 0.96.
+
+20160802
+	Serveral fixes from 'troy@' included to cope with compiler errors and 
+	to solve a bug in function getbitasaddress in ip4_bit.c (= ucspi-tcp6-1.02).
+	Reordered conf-* variables in main dir to allow easier generation of 
+	packages (i.e. RPM). Fixed script to identify different HW architecture
+	and OS. This version works in 32 bit mode on Raspian Linux / RasPi 7. 
+
+ 	Added ECDH capabilites (tx to Frank Bergmann for the patches).
+	Version 0.97.
+
+20161226
+	Added compatibility with LibreSSL.
+	Fixed missing negative return call treatment from 'poll' (tx Frank Bergmann).
+	Tentative 'emake' fix for Gentoo build.
+	Version 0.98a.
+
+20170209
+	Added OpenSSL 1.1 tweaks -- works under Debian (9) 'Stretch'.
+	Version 0.99.
+
+20170308
+	Included PID in sslserver + sslhandle abend logs in case of SSL failure.
+	Version 0.99a.
+
+20170617
+	Convenience release: Removed references to 'gcc' and used 'cc' instead.
+	Version 0.99b.
+
+20170712
+	Convenience release: Added `correct` pid display in error log.
+
+20171028
+	Fixed cosmetic bug in sslserver displaying parent and not child pid in log.
+	Tx Bruce Guenter.
+
+20171105
+	Clean ups.
+
+20180811
+	Fixed missing 'return 0' in ssl_params.c for ECDH handshake (tx. J.W.).
+	Version 0.99e
+
+----
+
+20180809
+	Complete refurbish based on fehQlibs.
+	Native handling of IPv4/IPv6 address for sslclient.
+	Version 0.10
+
+20180810
+	Added experimental 'ecdhparam' file.
+	Version 0.10.1
+
+20180816
+	Removed experimental 'ecdhparam' handling -- OpenSSL does not support it.
+	fehQlibs-08 required.
+	Version 0.10.2
+
+20181010
+	Finished TLS 1.3 integration (based on OpenSSL 1.1.1).
+	Removed compiler flags for ECDH -- now required.
+	fehQlibs-09 based.
+	Version 0.10.6
+
+20181109
+	Better handling of read EAGAIN (sslserver may hang).
+	Include socket_dualstack option (required for OS with IPv6_V6ONLY).
+	fehQlibs-10 required.
+	Version 0.10.7
+
+20190318
+	Added dualstack handling for servers applying the 
+	pseudo IP address ':0' on call (common now for all servers).
+	Tailored TLS error handling for EAGAIN end error codes.
+	Rewrote IPv4 CIDR address evaluation for rules.
+	Version 0.10.8
+
+20190505
+	Fixed broken evaluation of CIDR and IPv6 addresses; 
+	adjusted with ucspi-tcp6-1.10.5.
+	Improved compatibility with LibreSSL and included description.
+	Version 0.10.9
+
+20190608
+	Added DSA/DSS (+ECC) signature verification additionally to RSA.
+	Added compatibility with fehQlibs-12.
+	Version 0.10.10
+
+20190728
+	Compatibility improvements for the forthcoming s/qmail.
+	Fixed potential stack corruption in sslclient/sslhande/sslserver
+	while assigning hostname => 0.
+	Improved OpenSSL + LibreSSL compatibility:
+		LibreSSL 2.5 to 2.9 is working
+		OpenSSL 1.0.2 to 1.1.1 is working
+	Added SNI for sslclient.
+	Fixes for sslhandle.
+	Included new CIPHERLIST API for ssl_ciphers.
+	Removed dependency on conf-tcpbin; modules are expected to be in the path.
+	Modules rts.base and rts.sslperl are working now.
+	Version 0.10.11
+
+20190810
+	Added compatibility with fehQlibs-13.
+	Fixed wrong behavior of sslserver/sslclient given a local or remote IPv4
+	address. sslhandle is now an own program (man sslhandle.3). 
+	Code streamlined with ucspi-tcp6-1.11.0.
+
+20191012
+	Removed paranthesis from host in https@: [$host]:$port -> $host:port. Tx, A.E.
+	Version 0.11.0
+
+20191021
+	Fixed TLSv1* macro's names in ucspissl.h to match ssl_context.c.
+20191107
+	Clearified usage of 'SSL_CTX_set_ciphersuites()' in ssl_ciphers.c.
+	Version 0.11.1
+202002117
+	Adopted some fixes contributed by Alan S. (mtx):
+	DNS IP Name qualification; X.509 DNS name matching; certs are only read on demand.
+	Support of STARTTLS in sslclient is postponed to next minor version.
+	Version 0.11.2
+20200221
+	Straightend error codes and exiting for sslserver/sslhandle instead of dropping
+	the session in case of errors.	
+	Version 0.11.3
+20200303
+	Fixed iopause return value evaluation in remoteinfo.c.
+20200323
+	Removed return call evaluation of iopause in ssl_io.c and ssl_timeout.c
+	Not clear, whether this is resulting the polling.
+	Version 0.11.4
+20200730
+	Added pollmax limit to sslserver and sslhandle.
+	sslclient streamlined with tcpclient. fehQlibs-15 are required.
+	Version 0.11.5
+20200920
+	GCC 10 compliance enforced; removed it-perl from basic install.
+	Version 0.11.6a
+20210319
+	fehQlibs-17 changes included regarding socket interface.
+	Synced with ucspi-tcp6-1.12.3 providing MAXCONIP capabilities.
+	Successful integration tests for OpenSSL 3.0.0-alpha13 and LibreSSL 3.3.1.
+	Version 0.12.1
+20210325
+	Fixed sslserver's binding to IPv4/IPv6 addresses; code aligned with tcpserver.
+	Version 0.12.2
+20211017
+	sslhandle to bind to IPv4 sockets, if told so.
+	Compatibility tests with OpenSSL 3.0. Still preliminary.
+	Version 0.12.3
+20220824
+	Fixed early logmsg() call in sslserver.
+	Version 0.12.3
+20221228
+	Checked compatibility with LibreSSL 3.6/3.7.
+	The selected ciphers are now shown during start of sslserver/sslhandle.
+	Fixed duplicate symbol in sslhandle (Who).
+	Version 0.12.4
+20230403
+	Included tests on tai_now in ssl_timeout.c and removed obsolete pollmax variables.
+	ssl_io.c closes TLS connection gracefully upon SSL_ERROR_SSL recognition
+	and not continue looping.
+	Version 0.12.5
+20230403
+	ssl_io uses now two specific return codes under condition 'BOMB' avoiding unnecessary 
+	error messages in case of TLS client termination.
+	Version 0.12.6
+20230529
+	sslserver MAXCONIP feature is working now from the cdb read by the children.
+	MAXCONIP works even the general limit is 0.
+	Fixed wrong '-m' option for sslserver.
+	Added ip and port information in case sslserver/sslclient can't bind to local addresses.
+	Tweaked rts to include external load libraries.
+	Version 0.12.7
+20231010
+	Added new x509 certs and key material; all ECC now.
+	Fixed wrong evaluation of peer cert in ssl_verify (none-critical).
+	Version 0.12.8
+20231128
+	Included IP info in sslserver's TLS error messages for a quick lookup.
+	Fixed sslhandle's wrong if nesting.
+	sslserver return FATAL (and not ERROR) in case TLS is requested but missing.
+	Enhanced compatibility with OpenSSL 3.x.y.
+	Version 0.12.9
+20231204
+	Added argument '-y cdb' to sslserver in order to allow a rule checking
+	for IP addresses prior of the DNS/IDENT lookup (to cope with DDos attacks).
+	Version 0.12.10
+20240404
+	More verbose information for sslserver for (missing) key material.
+20240703
+	Removed pre OpenSSL 1.1.1 API calls. Adjusted sig handler signature.
+	Still need testing on different environments (OpenSSL/LibreSSL).
+	fehQlibs-25 required. getoptb() used instead getopt(). 
+	Re-issued ECC certificates. RTS is working now fine.
+	Changed error code display; ssl_error.c not used/working anymore.
+	The SSL client certificate verification is happening during handshake.
+	Using package/rts, sslclient can not be fed with a client keyfile password under OmniOS.
+	Version 0.13.00
+20240909
+	Added SAN Email and FQDN as MOD_SSL variables for client and server.
+	Regression tested against OpenSSL and LibreSSL (providing TLS 1.3 and ECC support).
+	Version 0.13.01
+20240919
+	Small fix for GCC 14.2 compiler. rts tests don't use encrypted keyfiles for sslclient.
+	Version 0.13.02
+20240922
+	Added capability for sslclient to read the password for a protected keyfile 
+	alternatively from a file instead of FD 3. Removed obsolete ssl_params_ecdh() function.
+	Version 0.13.03
+20241018
+	MAXCONIP now set to the initial 40 limit. Reading MAXCONIP from cdb works as designed.
+20250714
+	Upon start and calling sslserver with '1' will display initial LIMIT and MAXCONIP.
+	Version 0.13.04
+20250828
+ 	Updated some package scripts.
+	Clearification on the use of sslserver/sslhandle -y cdb.
+	Version 0.13.05
+20250910
+	C23 compatible version (GCC 15.2).
+	Version 0.13.06
+20251210
+	Version 0.13.07

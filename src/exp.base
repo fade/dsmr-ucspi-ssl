@@ -1,0 +1,1645 @@
+---> test sslserver + sslclient: four instances of sslserver (ports 50013, 50014, 50015, 50016) are used
+---> sslserver uses encrypted private keyfile
+---> sslserver @port 50015 requires client certs
+++++
+---> test sslclient/sslserver behavior with wrong parm (timeout 2 secs)
+++++
+--- sslclient prints usage message without enough arguments
+sslclient: usage: sslclient [ -463hHrRdDiqQveEsSnNxX ] [ -i localip ] [ -p localport ] [ -T timeoutconn ] [ -l localname ] [ -t timeoutinfo ] [ -I interface ] [ -a cafile ] [ -A cadir ] [ -c certfile ] [ -z ciphers ] [ -k keyfile ] [ -K keypassfile ] [ -V verifydepth ] [ -w progtimeout ] host port program
+100
+--- sslclient prints error message with unknown port name
+sslclient: fatal: (111) unable to figure out port number for nonexistentport
+111
+--- sslclient prints error message when connection fails
+sslclient: drop: (110) unable to connect to: 127.0.0.1 port: 16
+110
+--- sslclient -q does not print error message when connection fails
+110
+--- sslclient prints error message with unknown host name
+sslclient: error: (111) No IP address for: nonexistent.local.
+111
+--- sslclient prints error message with unresolvable host name
+sslclient: error: (111) No IP address for: thislabelistoolongbecausednshasalimitof63charactersinasinglelabel.
+111
+--- sslserver prints usage message without enough arguments
+sslserver: usage: sslserver [ -1346UXpPhHrRoOdDqQvVIeEsSnNmzZ ] [ -c limit ] [ -y iprules.cdb ] [ -x rules.cdb ] [ -B banner ] [ -g gid ] [ -u uid ] [ -b backlog ] [ -l localname ] [ -t timeout ] [ -I interface ] [ -T ssltimeout ] [ -w progtimeout ] host port program
+100
+--- sslserver prints error message with unknown port name
+sslserver: fatal: (111) unable to figure out port number for: nonexistentport
+111
+--- sslserver prints error message with unknown host name
+sslserver: fatal: (111) no IP address for: nonexistent.local.
+111
+--- sslserver prints error message with unresolvable host name
+sslserver: fatal: (111) temporarily unable to figure out IP address for: thislabelistoolongbecausednshasalimitof63charactersinasinglelabel.
+111
+--- sslserver prints error message with non-local host name
+sslserver: fatal: (111) unable to bind to: ...
+111
+---> test sslclient to connect to sslserver (on different port; note: cert verify will fail on localhost)
+++++
+--- sslclient sets basic environment variables
+banner50016
+PROTO=TLS
+SSLLOCALHOST=Localserver
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=ip6-loopback
+SSLREMOTEIP=::1
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=unset
+TCPLOCALIP=unset
+TCPLOCALPORT=...
+TCPREMOTEHOST=unset
+TCPREMOTEIP=unset
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=unset
+TCP6REMOTEIP=unset
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=TLSv1...
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=3
+SSL_SERVER_M_SERIAL=707294062933975438555791869290386405522635399785
+SSL_SERVER_S_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=loopback
+SSL_SERVER_S_DN_C=US
+SSL_SERVER_S_DN_ST=New York
+SSL_SERVER_S_DN_L=Brooklyn
+SSL_SERVER_S_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=loopback
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_C=US
+SSL_SERVER_I_DN_ST=New York
+SSL_SERVER_I_DN_L=Brooklyn
+SSL_SERVER_I_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=Aug  6 12:51:18 2024 GMT
+SSL_SERVER_V_END=Oct 19 12:51:18 2029 GMT
+SSL_SERVER_A_SIG=ecdsa-with-SHA256
+SSL_SERVER_A_KEY=id-ecPublicKey
+SSL_SERVER_CERT=-----BEGIN CERTIFICATE-----
+MIIDITCCAsagAwIBAgIUe+Qppl9hV1g09I+s5wICbc9WomkwCgYIKoZIzj0EAwIw
+ezELMAkGA1UEBhMCVVMxETAPBgNVBAgTCE5ldyBZb3JrMREwDwYDVQQHEwhCcm9v
+a2x5bjEmMCQGA1UEChMddWNzcGktc3NsIHJlc2VhcmNoIGxhYm9yYXRvcnkxHjAc
+BgNVBAMTFXVjc3BpLXNzbCByZXNlYXJjaCBjYTAeFw0yNDA4MDYxMjUxMThaFw0y
+OTEwMTkxMjUxMThaMG4xCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MREwDwYDVQQDEwhsb29wYmFjazBZMBMGByqGSM49AgEGCCqGSM49
+AwEHA0IABNS4zLXWH4sh2yd0cflrGoSpzY6ry8dBvX2mLkwg/uDm6h7Jo5Qj13OL
+rKm62km38omZ1KY8clC9E02fKb2VCKOjggEzMIIBLzAJBgNVHRMEAjAAMAsGA1Ud
+DwQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAmBgNVHREEHzAdhxAAAAAAAAAA
+AAAAAAAAAAABgglsb2NhbGhvc3QwgbgGA1UdIwSBsDCBrYAUx88gzyLjTSRqV5EX
+r59Fw8G71QGhf6R9MHsxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MR4wHAYDVQQDExV1Y3NwaS1zc2wgcmVzZWFyY2ggY2GCFFCipJ1q
+lBoqH7RyxUOh969gOQASMB0GA1UdDgQWBBRKXKYzgiBDW4Ucrx85wP4ucInq+zAK
+BggqhkjOPQQDAgNJADBGAiEA/viwfbuqeCLwujo7GBcXlyMgkyzQCEc5i/wY/sUQ
+Q1wCIQDWkHSZzOfusY5dnxnz3dAMoagftSWJf+FDpOcDb6p98g==
+-----END CERTIFICATE-----
+
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslserver -e also sets TCP environment variables
+banner50014
+PROTO=TCP6
+SSLLOCALHOST=Localserver
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=ip6-loopback
+SSLREMOTEIP=::1
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=Localserver
+TCPLOCALIP=::1
+TCPLOCALPORT=...
+TCPREMOTEHOST=ip6-loopback
+TCPREMOTEIP=::1
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=ip6-loopback
+TCP6REMOTEIP=::1
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=TLSv1...
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=3
+SSL_SERVER_M_SERIAL=707294062933975438555791869290386405522635399785
+SSL_SERVER_S_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=loopback
+SSL_SERVER_S_DN_C=US
+SSL_SERVER_S_DN_ST=New York
+SSL_SERVER_S_DN_L=Brooklyn
+SSL_SERVER_S_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=loopback
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_C=US
+SSL_SERVER_I_DN_ST=New York
+SSL_SERVER_I_DN_L=Brooklyn
+SSL_SERVER_I_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=Aug  6 12:51:18 2024 GMT
+SSL_SERVER_V_END=Oct 19 12:51:18 2029 GMT
+SSL_SERVER_A_SIG=ecdsa-with-SHA256
+SSL_SERVER_A_KEY=id-ecPublicKey
+SSL_SERVER_CERT=-----BEGIN CERTIFICATE-----
+MIIDITCCAsagAwIBAgIUe+Qppl9hV1g09I+s5wICbc9WomkwCgYIKoZIzj0EAwIw
+ezELMAkGA1UEBhMCVVMxETAPBgNVBAgTCE5ldyBZb3JrMREwDwYDVQQHEwhCcm9v
+a2x5bjEmMCQGA1UEChMddWNzcGktc3NsIHJlc2VhcmNoIGxhYm9yYXRvcnkxHjAc
+BgNVBAMTFXVjc3BpLXNzbCByZXNlYXJjaCBjYTAeFw0yNDA4MDYxMjUxMThaFw0y
+OTEwMTkxMjUxMThaMG4xCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MREwDwYDVQQDEwhsb29wYmFjazBZMBMGByqGSM49AgEGCCqGSM49
+AwEHA0IABNS4zLXWH4sh2yd0cflrGoSpzY6ry8dBvX2mLkwg/uDm6h7Jo5Qj13OL
+rKm62km38omZ1KY8clC9E02fKb2VCKOjggEzMIIBLzAJBgNVHRMEAjAAMAsGA1Ud
+DwQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAmBgNVHREEHzAdhxAAAAAAAAAA
+AAAAAAAAAAABgglsb2NhbGhvc3QwgbgGA1UdIwSBsDCBrYAUx88gzyLjTSRqV5EX
+r59Fw8G71QGhf6R9MHsxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MR4wHAYDVQQDExV1Y3NwaS1zc2wgcmVzZWFyY2ggY2GCFFCipJ1q
+lBoqH7RyxUOh969gOQASMB0GA1UdDgQWBBRKXKYzgiBDW4Ucrx85wP4ucInq+zAK
+BggqhkjOPQQDAgNJADBGAiEA/viwfbuqeCLwujo7GBcXlyMgkyzQCEc5i/wY/sUQ
+Q1wCIQDWkHSZzOfusY5dnxnz3dAMoagftSWJf+FDpOcDb6p98g==
+-----END CERTIFICATE-----
+
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslclient recognizes -D, -z, -r, -h, -t (with elective cipher)
+banner50016
+PROTO=TLS
+SSLLOCALHOST=Localserver
+SSLLOCALIP=::1
+SSLLOCALPORT=50016
+SSLREMOTEHOST=ip6-loopback
+SSLREMOTEIP=::1
+SSLREMOTEPORT=50019
+SSLREMOTEINFO=unset
+TCPLOCALHOST=unset
+TCPLOCALIP=unset
+TCPLOCALPORT=unset
+TCPREMOTEHOST=unset
+TCPREMOTEIP=unset
+TCPREMOTEPORT=unset
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=unset
+TCP6REMOTEIP=unset
+TCP6REMOTEPORT=unset
+SSL_PROTOCOL=TLSv1.3
+SSL_SESSION_ID=...
+SSL_CIPHER=TLS_CHACHA20_POLY1305_SHA256
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=256
+SSL_CIPHER_ALGKEYSIZE=256
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=OpenSSL 3.1.6 4 Jun 2024
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=3
+SSL_SERVER_M_SERIAL=707294062933975438555791869290386405522635399785
+SSL_SERVER_S_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=loopback
+SSL_SERVER_S_DN_C=US
+SSL_SERVER_S_DN_ST=New York
+SSL_SERVER_S_DN_L=Brooklyn
+SSL_SERVER_S_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=loopback
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_C=US
+SSL_SERVER_I_DN_ST=New York
+SSL_SERVER_I_DN_L=Brooklyn
+SSL_SERVER_I_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=Aug  6 12:51:18 2024 GMT
+SSL_SERVER_V_END=Oct 19 12:51:18 2029 GMT
+SSL_SERVER_A_SIG=ecdsa-with-SHA256
+SSL_SERVER_A_KEY=id-ecPublicKey
+SSL_SERVER_CERT=-----BEGIN CERTIFICATE-----
+MIIDITCCAsagAwIBAgIUe+Qppl9hV1g09I+s5wICbc9WomkwCgYIKoZIzj0EAwIw
+ezELMAkGA1UEBhMCVVMxETAPBgNVBAgTCE5ldyBZb3JrMREwDwYDVQQHEwhCcm9v
+a2x5bjEmMCQGA1UEChMddWNzcGktc3NsIHJlc2VhcmNoIGxhYm9yYXRvcnkxHjAc
+BgNVBAMTFXVjc3BpLXNzbCByZXNlYXJjaCBjYTAeFw0yNDA4MDYxMjUxMThaFw0y
+OTEwMTkxMjUxMThaMG4xCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MREwDwYDVQQDEwhsb29wYmFjazBZMBMGByqGSM49AgEGCCqGSM49
+AwEHA0IABNS4zLXWH4sh2yd0cflrGoSpzY6ry8dBvX2mLkwg/uDm6h7Jo5Qj13OL
+rKm62km38omZ1KY8clC9E02fKb2VCKOjggEzMIIBLzAJBgNVHRMEAjAAMAsGA1Ud
+DwQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAmBgNVHREEHzAdhxAAAAAAAAAA
+AAAAAAAAAAABgglsb2NhbGhvc3QwgbgGA1UdIwSBsDCBrYAUx88gzyLjTSRqV5EX
+r59Fw8G71QGhf6R9MHsxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MR4wHAYDVQQDExV1Y3NwaS1zc2wgcmVzZWFyY2ggY2GCFFCipJ1q
+lBoqH7RyxUOh969gOQASMB0GA1UdDgQWBBRKXKYzgiBDW4Ucrx85wP4ucInq+zAK
+BggqhkjOPQQDAgNJADBGAiEA/viwfbuqeCLwujo7GBcXlyMgkyzQCEc5i/wY/sUQ
+Q1wCIQDWkHSZzOfusY5dnxnz3dAMoagftSWJf+FDpOcDb6p98g==
+-----END CERTIFICATE-----
+
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslclient sets basic environment variables
+
+PROTO=TCP6
+SSLLOCALHOST=Local
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=unset
+SSLREMOTEIP=::1
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=unset
+TCPLOCALIP=unset
+TCPLOCALPORT=...
+TCPREMOTEHOST=unset
+TCPREMOTEIP=unset
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=unset
+TCP6REMOTEIP=unset
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=unset
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=unset
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=unset
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=unset
+SSL_SERVER_M_SERIAL=unset
+SSL_SERVER_S_DN=unset
+SSL_SERVER_S_DN_C=unset
+SSL_SERVER_S_DN_ST=unset
+SSL_SERVER_S_DN_L=unset
+SSL_SERVER_S_DN_O=unset
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=unset
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=unset
+SSL_SERVER_I_DN_C=unset
+SSL_SERVER_I_DN_ST=unset
+SSL_SERVER_I_DN_L=unset
+SSL_SERVER_I_DN_O=unset
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=unset
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=unset
+SSL_SERVER_V_END=unset
+SSL_SERVER_A_SIG=unset
+SSL_SERVER_A_KEY=unset
+SSL_SERVER_CERT=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslclient -e sets TCP environment variables
+
+PROTO=TCP6
+SSLLOCALHOST=Local
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=unset
+SSLREMOTEIP=::1
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=Local
+TCPLOCALIP=::1
+TCPLOCALPORT=...
+TCPREMOTEHOST=unset
+TCPREMOTEIP=::1
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=unset
+TCP6REMOTEIP=unset
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=unset
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=unset
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=unset
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=unset
+SSL_SERVER_M_SERIAL=unset
+SSL_SERVER_S_DN=unset
+SSL_SERVER_S_DN_C=unset
+SSL_SERVER_S_DN_ST=unset
+SSL_SERVER_S_DN_L=unset
+SSL_SERVER_S_DN_O=unset
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=unset
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=unset
+SSL_SERVER_I_DN_C=unset
+SSL_SERVER_I_DN_ST=unset
+SSL_SERVER_I_DN_L=unset
+SSL_SERVER_I_DN_O=unset
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=unset
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=unset
+SSL_SERVER_V_END=unset
+SSL_SERVER_A_SIG=unset
+SSL_SERVER_A_KEY=unset
+SSL_SERVER_CERT=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslclient -s sets TLS environment variables
+
+PROTO=TCP6
+SSLLOCALHOST=Local
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=unset
+SSLREMOTEIP=::1
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=unset
+TCPLOCALIP=unset
+TCPLOCALPORT=...
+TCPREMOTEHOST=unset
+TCPREMOTEIP=unset
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=unset
+TCP6REMOTEIP=unset
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=TLSv1...
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=unset
+SSL_SERVER_M_SERIAL=unset
+SSL_SERVER_S_DN=unset
+SSL_SERVER_S_DN_C=unset
+SSL_SERVER_S_DN_ST=unset
+SSL_SERVER_S_DN_L=unset
+SSL_SERVER_S_DN_O=unset
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=unset
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=unset
+SSL_SERVER_I_DN_C=unset
+SSL_SERVER_I_DN_ST=unset
+SSL_SERVER_I_DN_L=unset
+SSL_SERVER_I_DN_O=unset
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=unset
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=unset
+SSL_SERVER_V_END=unset
+SSL_SERVER_A_SIG=unset
+SSL_SERVER_A_KEY=unset
+SSL_SERVER_CERT=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslclient -h looks up host names properly (localhost. -> ip6-loopback)
+
+PROTO=TCP6
+SSLLOCALHOST=ip6-loopback
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=ip6-loopback
+SSLREMOTEIP=::1
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=unset
+TCPLOCALIP=unset
+TCPLOCALPORT=...
+TCPREMOTEHOST=unset
+TCPREMOTEIP=unset
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=unset
+TCP6REMOTEIP=unset
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=unset
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=unset
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=unset
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=unset
+SSL_SERVER_M_SERIAL=unset
+SSL_SERVER_S_DN=unset
+SSL_SERVER_S_DN_C=unset
+SSL_SERVER_S_DN_ST=unset
+SSL_SERVER_S_DN_L=unset
+SSL_SERVER_S_DN_O=unset
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=unset
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=unset
+SSL_SERVER_I_DN_C=unset
+SSL_SERVER_I_DN_ST=unset
+SSL_SERVER_I_DN_L=unset
+SSL_SERVER_I_DN_O=unset
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=unset
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=unset
+SSL_SERVER_V_END=unset
+SSL_SERVER_A_SIG=unset
+SSL_SERVER_A_KEY=unset
+SSL_SERVER_CERT=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslclient -v works
+sslclient: tls connected to: ::1 port: 50016
+ok
+0
+--- sslserver -N does not check certificates CN
+sslclient: tls connected to: ::1 port: 50014
+ok
+0
+--- sslserver and sslclient print errors for incompatible cipher lists for TLS < 1.3
+sslclient: error: (111) unable to set cipher list
+111
+--- sslclient -X ignores any server certificate
+sslclient: tls connected to: ::1 port: 50014
+ok
+0
+--- sslclient -n checks hostname with certificates SAN/CN
+sslclient: error: (110) server hostname does not match certificate: ::1 <=> localhost
+110
+---> test sslclient to connect to sslserver requiring client cert
+++++
+--- sslserver prints error for no client certificate
+sslclient: tls connected to: ::1 port: 50015
+ok
+0
+--- sslserver prints error for bad client certificate
+sslclient: error: (110) server hostname does not match certificate: ::1 <=> localhost
+110
+--- sslclient uses certificates
+sslclient: tls connected to: ::1 port: 50015
+
+PROTO=TCP6
+SSLLOCALHOST=ip6-localhost
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=ip6-loopback
+SSLREMOTEIP=::1
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=unset
+TCPLOCALIP=unset
+TCPLOCALPORT=...
+TCPREMOTEHOST=unset
+TCPREMOTEIP=unset
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=unset
+TCP6REMOTEIP=unset
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=TLSv1...
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=unset
+SSL_SERVER_M_SERIAL=unset
+SSL_SERVER_S_DN=unset
+SSL_SERVER_S_DN_C=unset
+SSL_SERVER_S_DN_ST=unset
+SSL_SERVER_S_DN_L=unset
+SSL_SERVER_S_DN_O=unset
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=unset
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_I_DN=unset
+SSL_SERVER_I_DN_C=unset
+SSL_SERVER_I_DN_ST=unset
+SSL_SERVER_I_DN_L=unset
+SSL_SERVER_I_DN_O=unset
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=unset
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=unset
+SSL_SERVER_V_END=unset
+SSL_SERVER_A_SIG=unset
+SSL_SERVER_A_KEY=unset
+SSL_SERVER_CERT=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_CLIENT_M_VERSION=3
+SSL_CLIENT_M_SERIAL=707294062933975438555791869290386405522635399786
+SSL_CLIENT_S_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=localhost
+SSL_CLIENT_S_DN_C=US
+SSL_CLIENT_S_DN_ST=New York
+SSL_CLIENT_S_DN_L=Brooklyn
+SSL_CLIENT_S_DN_O=ucspi-ssl research laboratory
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=localhost
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=ucspi-ssl research ca
+SSL_CLIENT_I_DN_C=US
+SSL_CLIENT_I_DN_ST=New York
+SSL_CLIENT_I_DN_L=Brooklyn
+SSL_CLIENT_I_DN_O=ucspi-ssl research laboratory
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=ucspi-ssl research ca
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=Aug  6 13:12:04 2024 GMT
+SSL_CLIENT_V_END=Oct 19 13:12:04 2029 GMT
+SSL_CLIENT_A_SIG=ecdsa-with-SHA256
+SSL_CLIENT_A_KEY=id-ecPublicKey
+SSL_CLIENT_CERT=-----BEGIN CERTIFICATE-----
+MIIDETCCAregAwIBAgIUe+Qppl9hV1g09I+s5wICbc9WomowCgYIKoZIzj0EAwIw
+ezELMAkGA1UEBhMCVVMxETAPBgNVBAgTCE5ldyBZb3JrMREwDwYDVQQHEwhCcm9v
+a2x5bjEmMCQGA1UEChMddWNzcGktc3NsIHJlc2VhcmNoIGxhYm9yYXRvcnkxHjAc
+BgNVBAMTFXVjc3BpLXNzbCByZXNlYXJjaCBjYTAeFw0yNDA4MDYxMzEyMDRaFw0y
+OTEwMTkxMzEyMDRaMG8xCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MRIwEAYDVQQDEwlsb2NhbGhvc3QwWTATBgcqhkjOPQIBBggqhkjO
+PQMBBwNCAASJ3xDXngQm5vz8GcwHweE4SQN0kH4sShGSRaWweV+2AR9oOx92Uxrw
+31PtPfJrV37EX5vuMj997WapAUa8UFHKo4IBIzCCAR8wCQYDVR0TBAIwADALBgNV
+HQ8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwLAYDVR0RBCUwI4IJbG9jYWxo
+b3N0hwQAAAAAhxAAAAAAAAAAAAAAAAAAAAAAMIGiBgNVHSMEgZowgZehf6R9MHsx
+CzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazERMA8GA1UEBxMIQnJvb2ts
+eW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBsYWJvcmF0b3J5MR4wHAYD
+VQQDExV1Y3NwaS1zc2wgcmVzZWFyY2ggY2GCFFCipJ1qlBoqH7RyxUOh969gOQAS
+MB0GA1UdDgQWBBS36lta7xjogEP8O/WiErayFJSfWzAKBggqhkjOPQQDAgNIADBF
+AiEAtWBUm1nBCwtNkQycZKJBH3FJjcR1OKutC5WuKobqUIkCIAUNVMSYmXZ65HN0
+c1iH3qgoJU/3ocgKmsVI6QpIgBQH
+-----END CERTIFICATE-----
+
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+---> test sslcat to connect to sslserver@5016
+++++
+--- sslcat works
+banner500130
+--- sslconnect works
+banner500130
+--- https@ works
+0
+---> test sslconnect to connect to sslserver@5013
+++++
+--- sslclient and sslserver handle larger data
+sslclient: tls connected to: ::1 port: 50013
+0
+--- sslserver times out
+sslclient: tls connected to: ::1 port: 50013
+banner50013hereur^M
+0
+sslclient: tls connected to: ::1 port: 50013
+banner500130
+---> test sslprint@50022
+++++
+--- sslprint prints usage message without enough arguments
+sslprint: usage: sslprint[ -1346UXpPhHrRoOdDqQviIeEsS ] [ -c limit ] [ -x rules.cdb ] [ -B banner ] [ -g gid ] [ -u uid ] [ -b backlog ] [ -l localname ] [ -t timeout ] [ -T ssltimeout ] [ -w progtimeout ] [ -f lockfile ] [ -I interface ] host port program
+100
+--- sslprint prints error message with unknown port name
+sslprint: fatal: (111) unable to figure out port number for: nonexistentport
+111
+--- sslprint prints error message with unknown host name
+sslprint: fatal: (111) no IP address for: nonexistent.local.
+111
+--- sslprint prints error message with unresolvable host name
+sslprint: fatal: (111) temporarily unable to figure out IP address for: thislabelistoolongbecausednshasalimitof63charactersinasinglelabel.
+111
+--- sslprint prints error message with non-local host name
+sslprint: fatal: (111) unable to bind
+111
+--- sslprint prints error message with used port
+sslprint: fatal: (111) unable to bind
+111
+--- sslprint sets basic environment variables
+sslprint
+PROTO=TCP6
+SSLLOCALHOST=Localserver
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=ip6-localnet
+SSLREMOTEIP=::
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=Localserver
+TCPLOCALIP=::1
+TCPLOCALPORT=...
+TCPREMOTEHOST=ip6-localnet
+TCPREMOTEIP=::
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=ip6-localnet
+TCP6REMOTEIP=::
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=TLSv1...
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=3
+SSL_SERVER_M_SERIAL=707294062933975438555791869290386405522635399785
+SSL_SERVER_S_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=loopback
+SSL_SERVER_S_DN_C=US
+SSL_SERVER_S_DN_ST=New York
+SSL_SERVER_S_DN_L=Brooklyn
+SSL_SERVER_S_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=loopback
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_SERVER_I_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_C=US
+SSL_SERVER_I_DN_ST=New York
+SSL_SERVER_I_DN_L=Brooklyn
+SSL_SERVER_I_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=Aug  6 12:51:18 2024 GMT
+SSL_SERVER_V_END=Oct 19 12:51:18 2029 GMT
+SSL_SERVER_A_SIG=ecdsa-with-SHA256
+SSL_SERVER_A_KEY=id-ecPublicKey
+SSL_SERVER_CERT=-----BEGIN CERTIFICATE-----
+MIIDITCCAsagAwIBAgIUe+Qppl9hV1g09I+s5wICbc9WomkwCgYIKoZIzj0EAwIw
+ezELMAkGA1UEBhMCVVMxETAPBgNVBAgTCE5ldyBZb3JrMREwDwYDVQQHEwhCcm9v
+a2x5bjEmMCQGA1UEChMddWNzcGktc3NsIHJlc2VhcmNoIGxhYm9yYXRvcnkxHjAc
+BgNVBAMTFXVjc3BpLXNzbCByZXNlYXJjaCBjYTAeFw0yNDA4MDYxMjUxMThaFw0y
+OTEwMTkxMjUxMThaMG4xCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MREwDwYDVQQDEwhsb29wYmFjazBZMBMGByqGSM49AgEGCCqGSM49
+AwEHA0IABNS4zLXWH4sh2yd0cflrGoSpzY6ry8dBvX2mLkwg/uDm6h7Jo5Qj13OL
+rKm62km38omZ1KY8clC9E02fKb2VCKOjggEzMIIBLzAJBgNVHRMEAjAAMAsGA1Ud
+DwQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAmBgNVHREEHzAdhxAAAAAAAAAA
+AAAAAAAAAAABgglsb2NhbGhvc3QwgbgGA1UdIwSBsDCBrYAUx88gzyLjTSRqV5EX
+r59Fw8G71QGhf6R9MHsxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MR4wHAYDVQQDExV1Y3NwaS1zc2wgcmVzZWFyY2ggY2GCFFCipJ1q
+lBoqH7RyxUOh969gOQASMB0GA1UdDgQWBBRKXKYzgiBDW4Ucrx85wP4ucInq+zAK
+BggqhkjOPQQDAgNJADBGAiEA/viwfbuqeCLwujo7GBcXlyMgkyzQCEc5i/wY/sUQ
+Q1wCIQDWkHSZzOfusY5dnxnz3dAMoagftSWJf+FDpOcDb6p98g==
+-----END CERTIFICATE-----
+
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslprint exits when environment changes
+sslprint
+PROTO=TCP6
+SSLLOCALHOST=Localserver
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=ip6-localnet
+SSLREMOTEIP=::
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=Localserver
+TCPLOCALIP=::1
+TCPLOCALPORT=...
+TCPREMOTEHOST=ip6-localnet
+TCPREMOTEIP=::
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=ip6-localnet
+TCP6REMOTEIP=::
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=TLSv1...
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=3
+SSL_SERVER_M_SERIAL=707294062933975438555791869290386405522635399785
+SSL_SERVER_S_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=loopback
+SSL_SERVER_S_DN_C=US
+SSL_SERVER_S_DN_ST=New York
+SSL_SERVER_S_DN_L=Brooklyn
+SSL_SERVER_S_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=loopback
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_SERVER_I_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_C=US
+SSL_SERVER_I_DN_ST=New York
+SSL_SERVER_I_DN_L=Brooklyn
+SSL_SERVER_I_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=Aug  6 12:51:18 2024 GMT
+SSL_SERVER_V_END=Oct 19 12:51:18 2029 GMT
+SSL_SERVER_A_SIG=ecdsa-with-SHA256
+SSL_SERVER_A_KEY=id-ecPublicKey
+SSL_SERVER_CERT=-----BEGIN CERTIFICATE-----
+MIIDITCCAsagAwIBAgIUe+Qppl9hV1g09I+s5wICbc9WomkwCgYIKoZIzj0EAwIw
+ezELMAkGA1UEBhMCVVMxETAPBgNVBAgTCE5ldyBZb3JrMREwDwYDVQQHEwhCcm9v
+a2x5bjEmMCQGA1UEChMddWNzcGktc3NsIHJlc2VhcmNoIGxhYm9yYXRvcnkxHjAc
+BgNVBAMTFXVjc3BpLXNzbCByZXNlYXJjaCBjYTAeFw0yNDA4MDYxMjUxMThaFw0y
+OTEwMTkxMjUxMThaMG4xCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MREwDwYDVQQDEwhsb29wYmFjazBZMBMGByqGSM49AgEGCCqGSM49
+AwEHA0IABNS4zLXWH4sh2yd0cflrGoSpzY6ry8dBvX2mLkwg/uDm6h7Jo5Qj13OL
+rKm62km38omZ1KY8clC9E02fKb2VCKOjggEzMIIBLzAJBgNVHRMEAjAAMAsGA1Ud
+DwQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAmBgNVHREEHzAdhxAAAAAAAAAA
+AAAAAAAAAAABgglsb2NhbGhvc3QwgbgGA1UdIwSBsDCBrYAUx88gzyLjTSRqV5EX
+r59Fw8G71QGhf6R9MHsxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MR4wHAYDVQQDExV1Y3NwaS1zc2wgcmVzZWFyY2ggY2GCFFCipJ1q
+lBoqH7RyxUOh969gOQASMB0GA1UdDgQWBBRKXKYzgiBDW4Ucrx85wP4ucInq+zAK
+BggqhkjOPQQDAgNJADBGAiEA/viwfbuqeCLwujo7GBcXlyMgkyzQCEc5i/wY/sUQ
+Q1wCIQDWkHSZzOfusY5dnxnz3dAMoagftSWJf+FDpOcDb6p98g==
+-----END CERTIFICATE-----
+
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslprint does not lose descriptors
+sslprint
+PROTO=TCP6
+SSLLOCALHOST=Localserver
+SSLLOCALIP=::1
+SSLLOCALPORT=...
+SSLREMOTEHOST=ip6-localnet
+SSLREMOTEIP=::
+SSLREMOTEPORT=...
+SSLREMOTEINFO=unset
+TCPLOCALHOST=Localserver
+TCPLOCALIP=::1
+TCPLOCALPORT=...
+TCPREMOTEHOST=ip6-localnet
+TCPREMOTEIP=::
+TCPREMOTEPORT=...
+TCPREMOTEINFO=unset
+TCP6REMOTEHOST=ip6-localnet
+TCP6REMOTEIP=::
+TCP6REMOTEPORT=...
+SSL_PROTOCOL=TLSv1...
+SSL_SESSION_ID=...
+SSL_CIPHER=...
+SSL_CIPHER_EXPORT=false
+SSL_CIPHER_USEKEYSIZE=...
+SSL_CIPHER_ALGKEYSIZE=...
+SSL_VERSION_INTERFACE=ucspi-ssl
+SSL_VERSION_LIBRARY=...
+SSL_TLS_SNI=unset
+SSL_SERVER_M_VERSION=3
+SSL_SERVER_M_SERIAL=707294062933975438555791869290386405522635399785
+SSL_SERVER_S_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=loopback
+SSL_SERVER_S_DN_C=US
+SSL_SERVER_S_DN_ST=New York
+SSL_SERVER_S_DN_L=Brooklyn
+SSL_SERVER_S_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_S_DN_OU=unset
+SSL_SERVER_S_DN_CN=loopback
+SSL_SERVER_S_DN_T=unset
+SSL_SERVER_S_DN_I=unset
+SSL_SERVER_S_DN_G=unset
+SSL_SERVER_S_DN_S=unset
+SSL_SERVER_S_DN_D=unset
+SSL_SERVER_S_DN_UID=unset
+SSL_SERVER_S_DN_Email=unset
+SSL_SERVER_SAN_Email_0=unset
+SSL_SERVER_SAN_Email_1=unset
+SSL_SERVER_SAN_DNS_0=unset
+SSL_SERVER_SAN_DNS_1=unset
+SSL_SERVER_I_DN=/C=US/ST=New York/L=Brooklyn/O=ucspi-ssl research laboratory/CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_C=US
+SSL_SERVER_I_DN_ST=New York
+SSL_SERVER_I_DN_L=Brooklyn
+SSL_SERVER_I_DN_O=ucspi-ssl research laboratory
+SSL_SERVER_I_DN_OU=unset
+SSL_SERVER_I_DN_CN=ucspi-ssl research ca
+SSL_SERVER_I_DN_T=unset
+SSL_SERVER_I_DN_I=unset
+SSL_SERVER_I_DN_G=unset
+SSL_SERVER_I_DN_S=unset
+SSL_SERVER_I_DN_D=unset
+SSL_SERVER_I_DN_UID=unset
+SSL_SERVER_I_DN_Email=unset
+SSL_SERVER_V_START=Aug  6 12:51:18 2024 GMT
+SSL_SERVER_V_END=Oct 19 12:51:18 2029 GMT
+SSL_SERVER_A_SIG=ecdsa-with-SHA256
+SSL_SERVER_A_KEY=id-ecPublicKey
+SSL_SERVER_CERT=-----BEGIN CERTIFICATE-----
+MIIDITCCAsagAwIBAgIUe+Qppl9hV1g09I+s5wICbc9WomkwCgYIKoZIzj0EAwIw
+ezELMAkGA1UEBhMCVVMxETAPBgNVBAgTCE5ldyBZb3JrMREwDwYDVQQHEwhCcm9v
+a2x5bjEmMCQGA1UEChMddWNzcGktc3NsIHJlc2VhcmNoIGxhYm9yYXRvcnkxHjAc
+BgNVBAMTFXVjc3BpLXNzbCByZXNlYXJjaCBjYTAeFw0yNDA4MDYxMjUxMThaFw0y
+OTEwMTkxMjUxMThaMG4xCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MREwDwYDVQQDEwhsb29wYmFjazBZMBMGByqGSM49AgEGCCqGSM49
+AwEHA0IABNS4zLXWH4sh2yd0cflrGoSpzY6ry8dBvX2mLkwg/uDm6h7Jo5Qj13OL
+rKm62km38omZ1KY8clC9E02fKb2VCKOjggEzMIIBLzAJBgNVHRMEAjAAMAsGA1Ud
+DwQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAmBgNVHREEHzAdhxAAAAAAAAAA
+AAAAAAAAAAABgglsb2NhbGhvc3QwgbgGA1UdIwSBsDCBrYAUx88gzyLjTSRqV5EX
+r59Fw8G71QGhf6R9MHsxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhOZXcgWW9yazER
+MA8GA1UEBxMIQnJvb2tseW4xJjAkBgNVBAoTHXVjc3BpLXNzbCByZXNlYXJjaCBs
+YWJvcmF0b3J5MR4wHAYDVQQDExV1Y3NwaS1zc2wgcmVzZWFyY2ggY2GCFFCipJ1q
+lBoqH7RyxUOh969gOQASMB0GA1UdDgQWBBRKXKYzgiBDW4Ucrx85wP4ucInq+zAK
+BggqhkjOPQQDAgNJADBGAiEA/viwfbuqeCLwujo7GBcXlyMgkyzQCEc5i/wY/sUQ
+Q1wCIQDWkHSZzOfusY5dnxnz3dAMoagftSWJf+FDpOcDb6p98g==
+-----END CERTIFICATE-----
+
+SSL_CLIENT_M_VERSION=unset
+SSL_CLIENT_M_SERIAL=unset
+SSL_CLIENT_S_DN=unset
+SSL_CLIENT_S_DN_C=unset
+SSL_CLIENT_S_DN_ST=unset
+SSL_CLIENT_S_DN_L=unset
+SSL_CLIENT_S_DN_O=unset
+SSL_CLIENT_S_DN_OU=unset
+SSL_CLIENT_S_DN_CN=unset
+SSL_CLIENT_S_DN_T=unset
+SSL_CLIENT_S_DN_I=unset
+SSL_CLIENT_S_DN_G=unset
+SSL_CLIENT_S_DN_S=unset
+SSL_CLIENT_S_DN_D=unset
+SSL_CLIENT_S_DN_UID=unset
+SSL_CLIENT_S_DN_Email=unset
+SSL_CLIENT_I_DN=unset
+SSL_CLIENT_I_DN_C=unset
+SSL_CLIENT_I_DN_ST=unset
+SSL_CLIENT_I_DN_L=unset
+SSL_CLIENT_I_DN_O=unset
+SSL_CLIENT_I_DN_OU=unset
+SSL_CLIENT_I_DN_CN=unset
+SSL_CLIENT_I_DN_T=unset
+SSL_CLIENT_I_DN_I=unset
+SSL_CLIENT_I_DN_G=unset
+SSL_CLIENT_I_DN_S=unset
+SSL_CLIENT_I_DN_D=unset
+SSL_CLIENT_I_DN_UID=unset
+SSL_CLIENT_I_DN_Email=unset
+SSL_CLIENT_V_START=unset
+SSL_CLIENT_V_END=unset
+SSL_CLIENT_A_SIG=unset
+SSL_CLIENT_A_KEY=unset
+SSL_CLIENT_CERT=unset
+SSL_CLIENT_CERT_CHAIN_0=unset
+SSL_CLIENT_CERT_CHAIN_1=unset
+SSL_CLIENT_SAN_Email_0=unset
+SSL_CLIENT_SAN_Email_1=unset
+SSL_CLIENT_SAN_DNS_0=unset
+SSL_CLIENT_SAN_DNS_1=unset
+0
+--- sslserver -1v prints proper messages
+::x1 : 50016
+sslserver::x ciphers x 
+sslserver::x cafile x xxx/rootCA_cert.pem
+sslserver::x ccafile x 
+sslserver::x cadir x xxx/etc
+sslserver::x certchainfile x 
+sslserver::x cert x xxx/::1_cert.pem
+sslserver::x key x xxx/::1_key.pem
+sslserver::x dhparam x xxx
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_CHACHA20_POLY1305_SHA256
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+::x1 : 50015
+sslserver::x ciphers x 
+sslserver::x cafile x xxx/rootCA_cert.pem
+sslserver::x ccafile x xxx/rootCA_cert.pem
+sslserver::x cadir x xxx/etc
+sslserver::x certchainfile x 
+sslserver::x cert x xxx/::1_cert.pem
+sslserver::x key x xxx/::1_key.pem
+sslserver::x dhparam x xxx
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x fatal: (111) unable to accept TLS from: ::1 for pid: x peer did not return a certificate
+sslserver::x ended by x status 28416
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x fatal: (111) unable to accept TLS from: ::1 for pid: x certificate verify failed
+sslserver::x ended by x status 28416
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x error: (110) client hostname does not match certificate for pid: x ip6-loopback <=> localhost
+sslserver::x ended by x status 28160
+sslserver::x status: 0/1/0
+::x1 : 50014
+sslserver::x ciphers x 
+sslserver::x cafile x xxx/rootCA_cert.pem
+sslserver::x ccafile x 
+sslserver::x cadir x xxx/etc
+sslserver::x certchainfile x 
+sslserver::x cert x xxx/::1_cert.pem
+sslserver::x key x xxx/::1_key.pem
+sslserver::x dhparam x xxx
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x fatal: (111) unable to accept TLS from: ::1 for pid: x unexpected eof while reading
+sslserver::x ended by x status 28416
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+::x1 : 50013
+sslserver::x ciphers x 
+sslserver::x cafile x xxx/rootCA_cert.pem
+sslserver::x ccafile x 
+sslserver::x cadir x xxx/etc
+sslserver::x certchainfile x 
+sslserver::x cert x xxx/::1_cert.pem
+sslserver::x key x xxx/::1_key.pem
+sslserver::x dhparam x xxx
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+sslserver::x status: 1/1/0
+sslserver::x pid x from ::1
+sslserver::x ok x Localserver:::1:x ip6-loopback:::1::x
+sslserver::x tls x accept TLSv1.3:TLS_AES_256_GCM_SHA384
+sslserver::x ended by x status 0
+sslserver::x status: 0/1/0
+::x1 : 50022
+sslprint::x ciphers x 
+sslprint::x cafile x xxx/rootCA_cert.pem
+sslprint::x ccafile x 
+sslprint::x cadir x xxx/etc
+sslprint::x certchainfile x 
+sslprint::x cert x xxx/::1_cert.pem
+sslprint::x key x xxx/::1_key.pem
+sslprint::x dhparam x xxx
+sslprint::x status: 0/1
+sslprint::x status: 1/1
+sslprint::x pid x from ::
+sslprint::x ok x Localserver:::1:x ip6-localnet:::::x
+sslprint::x tls x accept 
+sslprint::x done ...
+sslprint::x pid x from ::
+sslprint::x ok x Localserver:::1:x ip6-localnet:::::x
+sslprint::x tls x accept 
+sslprint::x fatal: (111) environ changed
+sslprint::x end x status 28416
+sslprint::x status: 0/1
+sslprint::x status: 1/1
+sslprint::x pid x from ::
+sslprint::x ok x Localserver:::1:x ip6-localnet:::::x
+sslprint::x tls x accept 
+sslprint::x done ...
+sslprint::x end x status 15
+sslprint::x status: 0/1
