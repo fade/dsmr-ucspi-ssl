@@ -1,8 +1,10 @@
 From: Brian O'Reilly <fade@deepsky.com>
 Date: Sat, 21 Mar 2026 00:00:00 +0000
-Subject: Set install prefix to /usr for Debian packaging
+Subject: Set install prefix to /usr and fehqlibs path for Debian packaging
 
 Install binaries to /usr/bin (via conf-home=/usr) rather than /usr/local/bin.
+Point conf-qlibs at /usr/lib/fehqlibs where the Debian fehqlibs-dev package
+installs its libraries and headers.
 
 --- a/conf-home
 +++ b/conf-home
@@ -12,3 +14,11 @@ Install binaries to /usr/bin (via conf-home=/usr) rather than /usr/local/bin.
 
  This is the ucspi-ssl home directory. Programs will be installed in
  .../bin.
+
+--- a/conf-qlibs
++++ b/conf-qlibs
+@@ -1,3 +1,3 @@
+-/usr/local/qlibs
++/usr/lib/fehqlibs
+
+ # This is the path to your qlibs directory
