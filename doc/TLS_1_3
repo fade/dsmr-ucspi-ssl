@@ -1,0 +1,36 @@
+Installing ucspi-ssl with TLS 1.3 support
+-----------------------------------------
+
+ucspi-ssl-0.13 can use TLS 1.3 capabilities alongside 
+with your system's previous *SSL installation:
+
+a) OpenSSL (> 1.1.1):
+
+- Download OpenSSL and untar OpenSSL at some path; ie. /usr/local.
+- Execute./conf && make. Don't do 'make install'!!
+
+- conf-ssl:     Include path to the header files via -I <path>.
+                (-I/usr/local/openssl-1.1.1/include)
+- conf-ssllib:  Include path to the libraries via -L <path>.
+                (-L/usr/local/openssl-1.1.1 -lssl -lcrypto)
+
+b) LibreSSL (> 3.7):
+
+Download LibreSSL and untar LibreSSL at some path; ie. /usr/local.
+Execute./conf && make. Don't do 'make install'!!
+Do a 
+                ln -s ssl/.libs/libssl.so .
+                ln -s crypto/.libs/libcrypto.so .
+in the LibreSSL main directory. 
+
+- conf-ssl:     Include path to the header files via -I <path>.
+                (-I/usr/local/libressl-3.9.1/include)
+- conf-ssllib:  Include path to the libraries via -L <path>.
+                (-L/usr/local/libressl-3.9.1 -lssl -lcrypto)
+
+
+
+Recompile ucspi-ssl.
+This should be it.
+
+E. Hoffmann, September 2024.

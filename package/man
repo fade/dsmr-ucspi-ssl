@@ -1,0 +1,126 @@
+#!/bin/sh
+# Version: 2025-08-19
+# Note: Considered man and mandoc, evaluate manpath; otherwise use conf-man
+# ------------------------------------------------------------------------
+
+shout() { echo "$0: $@" >&2; }
+barf() { shout "fatal: $@"; exit 111; }
+safe() { "$@" || barf "cannot $@"; }
+
+me=`cat package/path | cut -d'/' -f2`
+unix=`uname -a | cut -d' ' -f1 | tr [a-z] [A-Z]`
+mandir=""
+usemanpath=0
+usemandoc=0
+
+if [ `which manpath` 2>/dev/null ]
+then
+	usemanpath=1
+fi
+
+if [ `which mandoc`  2>/dev/null ]
+then 
+  usemandoc=1
+  shout "Using mandoc facility for man files."
+fi
+
+safe umask 022
+[ -d man ] || barf "no man directory"
+
+if [ ${usemanpath} -eq 1 ]
+then
+   mandir=`manpath | awk -F: '{print $1}'`
+else
+   shout "'manpath' not available; using  'conf-man' instead."
+   usemanpath=0
+fi
+
+if [ -f conf-man ] && [ ${usemanpath} -eq 0 ]
+then
+   mandir=`head -1 conf-man`
+   shout "Setting manual man-dir: ${mandir}."
+fi
+
+if [ -d "${mandir}" ]
+then
+       shout "Setting manpath man-dir: ${mandir}."
+else
+       barf "can't determine man-path directory."
+fi
+
+cd man
+if [ ${usemandoc} -eq 1 ] && [ -f Makefile.mandoc ]
+then
+  safe make -f Makefile.mandoc
+else
+  usemandoc=0
+  safe make 
+fi
+
+if [ $usemandoc -eq 0 ]
+then
+  shout "Installing ${me} compressed man-files in ${mandir}."
+else
+  shout "Installing ${me} un-compressed man-files in ${mandir}."
+fi
+
+for i in `find . -name "*[1-8]"`
+do
+  i=${i#./}
+  all="$all $i"
+done
+
+for manfile in $all
+do
+  dir="man`echo $manfile | awk -F. '{print $NF}'`"
+  [ -d $mandir/$dir ] || safe mkdir $mandir/$dir
+  if [ $usemandoc -eq 0 ]
+  then
+    safe gzip $manfile && cp $manfile.gz $mandir/$dir
+  else
+    safe cp $manfile $mandir/$dir
+  fi
+done
+
+## nroff: Required for old catman systems only 
+
+if [ $usemandoc -eq 0 ]
+then
+  shout "Installing ${me} nroff'ed man-files in ${mandir}/catX."
+
+  all=""
+  for i in `find . -name "*0"`
+  do
+    all="$all $i"
+  done
+
+  for manfile in $all
+  do
+    catname=${manfile%.0}
+    catfiles=`ls -1 ${catname}* | grep -v '.0' | grep -v '.9'`
+
+    for catfile in $catfiles
+    do
+      dir="$mandir/cat`echo $catfile | awk -F. '{print $(NF-1)}'`"
+      safe mkdir -p $dir
+      safe cp $manfile $dir/${manfile#*/}
+    done
+  done
+else
+  if [ `which makewhatis` 2>/dev/null ]
+  then
+     makewhatis $mandir
+     shout "Installing ${me} mandoc files in db (makewhatis)."
+  elif [ `which catman` 2>/dev/null ]
+  then
+     catman $mandir
+     shout "Installing ${me} mandoc files in db (catman)."
+  else 
+     man -w $mandir
+     shout "Installing ${me} mandoc files in db (man -w)."
+  fi 
+fi
+
+cd ..
+
+exit 0

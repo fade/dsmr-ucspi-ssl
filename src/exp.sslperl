@@ -1,0 +1,105 @@
+--- sslperl works
+sslperlHello, World! (1): here you are
+0
+sslperlHello, World! (2): here you are
+0
+sslperlHello, World! (1): here you are
+0
+sslperlHello, World! (2): here you are
+0
+--- sslperl prints usage message without enough arguments
+sslperl: usage: sslperl[ -1346UXpPhHrRoOdDqQviIeEsS ] [ -c limit ] [ -x rules.cdb ] [ -B banner ] [ -g gid ] [ -u uid ] [ -b backlog ] [ -l localname ] [ -t timeout ] [ -T ssltimeout ] [ -w progtimeout ] [ -f lockfile ] [ -I interface ] host port program
+100
+--- sslperl prints error message with unknown port name
+sslperl: fatal: (111) unable to figure out port number for: nonexistentport
+111
+--- sslperl prints error message with unknown host name
+sslperl: fatal: (111) temporarily unable to figure out IP address for: nonexistent.local.
+111
+--- sslperl prints error message with unresolvable host name
+sslperl: fatal: (111) no IP address for: thislabelistoolongbecausednshasalimitof63charactersinasinglelabel.
+111
+--- sslperl prints error message with non-local host name
+sslperl: fatal: (111) unable to bind
+111
+--- sslperl preserves environment
+sslperl changed environment
+0
+--- sslperl handles larger requests
+sslclient: tls connected to: 127.0.0.1 port: 50022
+0
+--- sslserver -1v prints proper messages
+127.0.0.1 : 50022
+sslperl: cafile x xxx/rootCA.pem
+sslperl: ccafile x 
+sslperl: cadir x xxx/etc
+sslperl: certchainfile x 
+sslperl: cert x xxx/::x
+sslperl: key x xxx/::x
+sslperl: dhparam x xxx
+sslperl: status: 0/1/0
+sslperl: status: 1/1/0
+sslperl: pid x from 127.0.0.1
+sslperl: ok x Localserver:127.0.0.1:50022 ip4-loopback:127.0.0.1::x
+sslperl: tls x accept 
+log: Hello, World! (1): here you are
+sslperl: drop: (110) environ changed
+sslperl: done ...
+sslperl: pid x from 127.0.0.1
+sslperl: ok x Localserver:127.0.0.1:50022 ip4-loopback:127.0.0.1::x
+sslperl: tls x accept 
+log: Hello, World! (2): here you are
+sslperl: end x status 0
+sslperl: status: 0/1/0
+sslperl: status: 1/1/0
+sslperl: pid x from 127.0.0.1
+sslperl: ok x Localserver:127.0.0.1:50022 ip4-loopback:127.0.0.1::x
+sslperl: tls x accept 
+log: Hello, World! (1): here you are
+sslperl: drop: (110) environ changed
+sslperl: done ...
+sslperl: pid x from 127.0.0.1
+sslperl: ok x Localserver:127.0.0.1:50022 ip4-loopback:127.0.0.1::x
+sslperl: tls x accept 
+log: Hello, World! (2): here you are
+sslperl: end x status 0
+sslperl: status: 0/1/0
+sslperl: status: 1/1/0
+sslperl: end x status 15
+sslperl: status: 0/1/0
+127.0.0.1 : 50022
+sslperl: cafile x xxx/rootCA.pem
+sslperl: ccafile x 
+sslperl: cadir x xxx/etc
+sslperl: certchainfile x 
+sslperl: cert x xxx/::x
+sslperl: key x xxx/::x
+sslperl: dhparam x xxx
+sslperl: status: 0/1/0
+sslperl: status: 1/1/0
+sslperl: pid x from 127.0.0.1
+sslperl: ok x Localserver:127.0.0.1:50022 ip4-loopback:127.0.0.1::x
+sslperl: tls x accept 
+log: NOW=
+log: changed environment
+sslperl: drop: (110) environ changed
+sslperl: done ...
+sslperl: end x status 15
+sslperl: status: 0/1/0
+127.0.0.1 : 50022
+sslperl: cafile x xxx/rootCA.pem
+sslperl: ccafile x 
+sslperl: cadir x xxx/etc
+sslperl: certchainfile x 
+sslperl: cert x xxx/::x
+sslperl: key x xxx/::x
+sslperl: dhparam x xxx
+sslperl: status: 0/1/0
+sslperl: status: 1/1/0
+sslperl: pid x from 127.0.0.1
+sslperl: ok x Localserver:127.0.0.1:50022 ip4-loopback:127.0.0.1::x
+sslperl: tls x accept 
+sslperl: drop: (110) environ changed
+sslperl: done ...
+sslperl: end x status 15
+sslperl: status: 0/1/0

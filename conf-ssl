@@ -1,0 +1,14 @@
+
+
+-I/usr/local/openssl-3.0.7/include/
+
+# using the system default it could stay empty; otherwise check for that
+
+-I/usr/local/openssl-3.0.7/include/
+-I/home/ucspi/_SSL/libressl-3.7.2/include/
+
+-I/usr/kerberos/include 
+
+# This will be used to include headers from a different version,
+# or if openssl requires additional support, e.g. kerberos support on RedHat Linux.
+
