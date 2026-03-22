@@ -1,0 +1,105 @@
+#+TITLE: ucspi-ssl — DSMR Package Documentation
+#+AUTHOR: Brian O'Reilly <fade@deepsky.com>
+#+DATE: 2026-03-22
+
+* Summary
+
+~ucspi-ssl~ packages the fehcom.de fork of ucspi-ssl (0.13.07) by Erwin
+Hoffman.  It provides ~sslserver~ and ~sslclient~ — UCSPI-compatible TCP
+wrappers that layer TLS/SSL onto stdin/stdout for djbware services such as
+qmail SMTP and IMAP.  Supports OpenSSL 3.x and TLS 1.3.
+
+| Field       | Value                              |
+|-------------+------------------------------------|
+| Source      | ucspi-ssl                          |
+| Binary      | ucspi-ssl                          |
+| Version     | 0.13.07-1                          |
+| Architecture| any                                |
+| Binaries in | ~/usr/bin/~                        |
+| Build-dep   | fehqlibs-dev, libssl-dev           |
+| Target      | Debian 13 Trixie                   |
+
+* Description
+
+The UCSPI (Unix Client-Server Program Interface) convention separates network
+programs from their transport: a server program reads from fd 0 and writes to
+fd 6; the UCSPI server wrapper handles bind, accept, and (with ucspi-ssl)
+TLS negotiation before execing the application.
+
+ucspi-ssl provides:
+
+- ~sslserver~ — a TLS-capable tcpserver replacement; accepts connections,
+  performs TLS handshake, and execs a child program.
+- ~sslclient~ — connects to a TLS server and wires it to stdin/stdout of a
+  child program.
+- ~sslio~ — glues a plaintext UCSPI server to a TLS session, enabling STARTTLS
+  without the inner server knowing about TLS.
+- Supporting tools: ~sslprint~, ~sslcat~, ~certcheck~, ~who@~, and others.
+
+In the DSMR stack ucspi-ssl is used by the ~qmail-submission~ supervise script
+to wrap SMTP submission (port 587) with TLS.
+
+** Relationship to fehqlibs
+
+ucspi-ssl uses fehqlibs for DNS resolution (DNSSEC-aware hostname verification
+against the presented certificate).  The ~conf-qlibs~ source file is patched
+at build time to point at ~/usr/lib/fehqlibs~ via the
+~debian-install-paths.patch~ quilt patch.
+
+* TL;DR Runtime Documentation
+
+** Installed binaries
+
+All binaries land in ~/usr/bin/~.  The most commonly used:
+
+| Binary      | Purpose                                      |
+|-------------+----------------------------------------------|
+| ~sslserver~ | TLS-accepting server wrapper (like tcpserver)|
+| ~sslclient~ | TLS-connecting client wrapper                |
+| ~sslio~     | STARTTLS relay between plaintext and TLS     |
+| ~certcheck~ | Inspect / verify an X.509 certificate        |
+
+** Typical invocation (sslserver)
+
+#+BEGIN_SRC sh
+exec /usr/bin/sslserver \
+  -e -v \
+  -n /etc/qmail/servercert.pem \
+  0 465 \
+  /var/lib/qmail/bin/qmail-smtpd 2>&1
+#+END_SRC
+
+The ~-n~ flag specifies the combined cert+key PEM file.  Environment variables
+~$SSL_CLIENT_*~ are set in the child environment with peer certificate
+information.
+
+** Key environment variables (set by sslserver in child)
+
+| Variable              | Content                                |
+|-----------------------+----------------------------------------|
+| ~SSL_CIPHER~          | Negotiated cipher suite                |
+| ~SSL_CLIENT_DN~       | Client certificate subject DN (if any)|
+| ~PROTO~               | ~SSL~                                  |
+| ~TCPREMOTEIP~         | Peer IP address                        |
+
+** Certificate requirements
+
+~sslserver~ and ~sslclient~ expect a PEM file containing both the certificate
+and private key.  The qmail package generates such a combined PEM at
+~/etc/qmail/servercert.pem~.
+
+#+BEGIN_SRC sh
+# Verify a combined PEM
+openssl x509 -in /etc/qmail/servercert.pem -noout -subject -dates
+# Count sections (should be 2: cert + key)
+grep -c 'BEGIN' /etc/qmail/servercert.pem
+#+END_SRC
+
+** Rebuilding from source
+
+#+BEGIN_SRC sh
+cd ucspi-ssl-0.13.07
+dpkg-buildpackage -us -uc -b
+#+END_SRC
+
+Requires ~fehqlibs-dev~ installed first.
