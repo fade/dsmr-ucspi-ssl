@@ -1,3 +1,9 @@
+ucspi-ssl (0.13.07-2) trixie; urgency=low
+
+  * Fix dsmr-verify pipefail bug; PostgreSQL integration validation
+
+ -- Brian O'Reilly <fade@deepsky.com>  Fri, 03 Apr 2026 15:43:10 -0400
+
 ucspi-ssl (0.13.07-1) UNRELEASED; urgency=medium
 
   * Initial Debian packaging of ucspi-ssl 0.13.07 (fehcom.de).
