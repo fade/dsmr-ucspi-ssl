@@ -1,3 +1,27 @@
+ucspi-ssl (0.13.07-6) trixie; urgency=low
+
+  * Fix vpasswd-postgres-convert: handle legacy 8-field clear-passwd format
+
+ -- Brian O'Reilly <fade@deepsky.com>  Mon, 13 Apr 2026 13:08:27 -0400
+
+ucspi-ssl (0.13.07-5) trixie; urgency=low
+
+  * Add vpasswd-postgres-convert migration; fix dovecot-mysql→pgsql dependency
+
+ -- Brian O'Reilly <fade@deepsky.com>  Mon, 13 Apr 2026 12:34:57 -0400
+
+ucspi-ssl (0.13.07-4) trixie; urgency=low
+
+  * Raise default softlimit from 12MB to 100MB for modern shared library requirements
+
+ -- Brian O'Reilly <fade@deepsky.com>  Sun, 05 Apr 2026 22:52:53 -0400
+
+ucspi-ssl (0.13.07-3) trixie; urgency=low
+
+  * Fix qmail-uids-gids postinst: make user/group creation idempotent for legacy systems
+
+ -- Brian O'Reilly <fade@deepsky.com>  Sun, 05 Apr 2026 22:32:41 -0400
+
 ucspi-ssl (0.13.07-2) trixie; urgency=low
 
   * Fix dsmr-verify pipefail bug; PostgreSQL integration validation
