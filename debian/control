@@ -2,7 +2,8 @@ Source: ucspi-ssl
 Section: net
 Priority: optional
 Maintainer: Brian O'Reilly <fade@deepsky.com>
-Build-Depends: debhelper-compat (= 13), libssl-dev, fehqlibs-dev
+Build-Depends: debhelper-compat (= 13), libssl-dev, fehqlibs-dev,
+ emacs-nox | emacs, texinfo, pandoc
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
 

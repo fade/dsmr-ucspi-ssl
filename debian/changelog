@@ -1,3 +1,14 @@
+ucspi-ssl (0.13.07-7) trixie; urgency=low
+
+  * Ship a DSMR-focused GNU info manual and HTML doc page derived from an
+    org-mode source of truth (doc/ucspi-ssl.org): the UCSPI/TLS model, the one
+    Debian install-paths patch, the fehQlibs linkage, how the qmail services
+    use sslserver, the certificate convention, and the SSL_* child environment.
+    Upstream per-command man pages continue to ship as-is.  Generators (emacs,
+    texinfo, pandoc) are Build-Depends only.  Supersedes the old README.dsmr.
+
+ -- Brian O'Reilly <fade@deepsky.com>  Fri, 05 Jun 2026 11:00:00 -0400
+
 ucspi-ssl (0.13.07-6) trixie; urgency=low
 
   * Fix vpasswd-postgres-convert: handle legacy 8-field clear-passwd format

@@ -1,5 +1,10 @@
 #!/usr/bin/make -f
 
+# DSMR-focused info manual + HTML page, derived from the org source of truth
+# (doc/ucspi-ssl.org) at build time.  Generators are Build-Depends only.
+EMACS ?= emacs
+TOPIC = doc/ucspi-ssl
+
 %:
 	dh $@
 
@@ -9,7 +14,16 @@ override_dh_auto_configure:
 	package/compile base
 
 override_dh_auto_build:
-	# Build is done by package/compile in the configure step
+	# Build is done by package/compile in the configure step.
+	# Generate the GNU info manual and HTML doc page from org.
+	$(EMACS) --batch -Q \
+	    --eval "(require 'ox-texinfo)" \
+	    --eval "(with-current-buffer (find-file-noselect \"$(TOPIC).org\") (org-texinfo-export-to-texinfo))"
+	makeinfo --no-split "$(TOPIC).texi" -o "$(TOPIC).info"
+	$(EMACS) --batch -Q \
+	    --eval "(require 'ox-html)" \
+	    --eval "(setq org-html-validation-link nil)" \
+	    --eval "(with-current-buffer (find-file-noselect \"$(TOPIC).org\") (org-html-export-to-html))"
 
 override_dh_auto_install:
 	install -d debian/ucspi-ssl/usr/bin
@@ -25,3 +39,4 @@ override_dh_auto_install:
 
 override_dh_auto_clean:
 	rm -rf compile command
+	rm -f "$(TOPIC).texi" "$(TOPIC).info" "$(TOPIC).html"
